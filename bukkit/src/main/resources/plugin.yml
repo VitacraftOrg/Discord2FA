@@ -1,4 +1,16 @@
-name: "discord2fa"
-version: '1.0'
-main: 'net.vitacraft.discord2fa_bukkit.Discord2FA'
+name: Discord2FA
+version: 1.5.3
+main: net.vitacraft.discord2fa_bukkit.Discord2FA
 api-version: '1.20'
+load: STARTUP
+commands:
+  link:
+    description: Link your Account with Discord
+    usage: §c/link <code>
+    aliases: [2fa]
+  unlink:
+    description: Unlink your Account from Discord
+    usage: §c/unlink
+  discord2fa:
+    description: Discord2FA Command
+    usage: §c/discord2fa §c<§7-§c/§7reload§c>

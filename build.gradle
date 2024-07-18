@@ -23,6 +23,7 @@ repositories {
     maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://repo.spongepowered.org/repository/maven-public/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -32,6 +33,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+
+    implementation("com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4")
+    shadow 'com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4'
+
+    implementation("net.dv8tion:JDA:5.0.1")
+    implementation files("${project.projectDir}/libs/JDA-5.0.1-withDependencies-min.jar")
 }
 
 processResources {
@@ -44,6 +51,7 @@ shadowJar {
     archiveClassifier.set('')
     dependencies {
         exclude("META-INF/versions/**")
+        include(dependency('com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4'))
         include(dependency("${project.group}:common"))
         include(project(':common'))
         include(project(':bukkit'))
@@ -66,16 +74,36 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven { url 'https://maven.fabricmc.net/' }
+        maven { url 'https://libraries.minecraft.net/' }
+        maven { url 'https://api.modrinth.com/maven' }
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://repo.spongepowered.org/repository/maven-public/' }
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
-        if (project.name != 'common') {
+        if (project.name == 'common') {
+            //spigot
+            compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
+
+            //fabric
+            compileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
+            compileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+        } else {
             implementation project(':common')
         }
+
         compileOnly 'org.jetbrains:annotations:24.1.0'
         compileOnly 'org.projectlombok:lombok:1.18.32'
 
         annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+        shadow implementation("com.github.Carleslc.Simple-YAML:Simple-Yaml:1.8.4")
+
+        implementation("net.dv8tion:JDA:5.0.1")
+        implementation files("${project.projectDir}/libs/JDA-5.0.1-withDependencies-min.jar")
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
         testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
@@ -93,4 +121,4 @@ subprojects {
     }
 }
 
-logger.lifecycle("Building ${project.name} ${version} by <AUTHOR>")
+logger.lifecycle("Building ${project.name} ${version} by Siea")
